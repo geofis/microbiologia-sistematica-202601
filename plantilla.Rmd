@@ -1,0 +1,140 @@
+---
+title: "Mi manuscrito en APA 7"
+author: "Autor"
+affiliation: "Universidad Autónoma de Santo Domingo (UASD)"
+output:
+  bookdown::pdf_document2:
+    latex_engine: xelatex
+    fig_caption: true
+    extra_dependencies: ["float", "booktabs", "longtable"]
+documentclass: apa7
+classoption: [man,floatsintext]
+fontsize: 12pt
+lang: es-ES
+bibliography: bibliografia.bib
+date: "`r format(Sys.Date(), '%Y-%m-%d')`"
+header-includes:
+  - \title{Mi manuscrito en APA 7}
+  - \shorttitle{Mi manuscrito}
+  - \affiliation{Universidad Autónoma de Santo Domingo (UASD)}
+  - \abstract{ESCRIBE AQUÍ TU RESUMEN. NO INTRODUZCAS ENTER NI SALTOS DE LÍNEA.}
+  - \keywords{palabra clave 1, palabra clave 2, palabra clave 3}
+
+  - \usepackage{orcidlink}
+  # - \usepackage{float}
+  - \usepackage[all]{nowidow}
+  - \usepackage{pdflscape}
+  - \renewcommand\spanishtablename{Tabla}
+  - \usepackage{xcolor}
+  - \usepackage{tabu}
+  - \usepackage{xurl}
+  # - \usepackage[left]{lineno}
+  # - \linenumbers
+---
+
+\pagebreak
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  cache = FALSE,
+  echo = FALSE,
+  warning = FALSE,
+  message = FALSE,
+  dpi = 300,
+  fig.align = "center",
+  out.width = "100%"
+)
+
+options(
+  knitr.duplicate.label = "allow",
+  knitr.kable.NA = ""
+)
+
+# Aleatorización
+set.seed(99)
+
+# Paquetes
+library(tidyverse)
+library(knitr)
+library(kableExtra)
+
+# Tema general para gráficos ggplot2
+theme_set(theme_bw())
+```
+
+
+
+```{r, echo=F, eval=T, include=F}
+# Cargar paquetes
+library(cluster)
+library(tidyverse)
+library(readxl)
+library(vegan)
+
+# Cargar datos e imprimirlos
+datos <- read_excel("data/sudokus_micro_sistematica.xlsx", sheet = 1, range = "A4:J13", col_names = T)
+datos_9x9 <- datos[1:9, 2:10]
+datos_9x9
+
+# Estructura del objeto datos_9x9
+str(datos_9x9)
+
+# Convertir a matriz numérica si hace falta
+mat <- as.matrix(datos_9x9)
+mat
+
+# Opción A: Euclidiana (básica)
+dist_mat_e <- dist(mat, method = "euclidean")
+dist_mat_e
+
+# Opción B: Bray-Curtis (recomendada en ecología)
+dist_mat_b <- vegdist(mat, method = "bray")
+
+# Cluster con matriz de distancia euclidea y método UPGMA
+hc_upgma_d_e <- hclust(dist_mat_e, method = "average")
+hc_upgma_d_e
+
+# Mostrar árbol completo (sin cortar)
+plot(hc_upgma_d_e, 
+     main = "Dendrograma - Cluster jerárquico",
+     xlab = "",
+     sub = "",
+     cex = 0.8)
+
+# Cortar y poner rectángulos
+cutree(hc_upgma_d_e, 2)
+rect.hclust(hc_upgma_d_e, 2)
+```
+
+
+# Introducción {-}
+
+El Sudoku ...
+
+El análisis de agrupamiento o análisis cluster ... []
+
+# Materiales y métodos {-}
+
+
+
+# Resultados {-}
+
+Este es mi dendrograma para el Sudoku SK (I) (ver Figura \@ref(fig:dendrograma-sk-i))
+
+```{r dendrograma-sk-i, echo=F, fig.cap="Dendrograma para el Sudoku SK (I)"}
+# Mostrar árbol completo (sin cortar)
+plot(hc_upgma_d_e, 
+     main = "Dendrograma - Cluster jerárquico SK (I)",
+     xlab = "",
+     sub = "",
+     cex = 0.8)
+# Cortar y poner rectángulos
+rect.hclust(hc_upgma_d_e, 2)
+```
+
+
+# Discusión {-}
+
+
+
+# Referencias {-}
