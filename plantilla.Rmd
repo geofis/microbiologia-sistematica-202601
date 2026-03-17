@@ -107,6 +107,49 @@ rect.hclust(hc_upgma_d_e, 2)
 ```
 
 
+```{r, echo=F, eval=T, include=F}
+# Por medio de función
+source('generar-dendrogramas.R')
+
+# ============================================================
+# EJEMPLOS DE USO
+# ============================================================
+
+# Ejemplo 1: distancia euclídea
+res1 <- analizar_sudoku(
+  archivo = "data/sudokus_micro_sistematica.xlsx",
+  codigo  = "SK  (I)",
+  hoja    = 1,
+  k       = 2,
+  distancia = "euclidean",
+  metodo  = "average",
+  graficar = TRUE
+)
+
+# Ver matriz extraída
+res1$matriz
+
+# Ver grupos asignados a las filas
+res1$grupos
+
+# ------------------------------------------------------------
+
+# Ejemplo 2: Bray-Curtis
+res2 <- analizar_sudoku(
+  archivo = "data/sudokus_micro_sistematica.xlsx",
+  codigo  = "CD (IV)",
+  hoja    = 1,
+  k       = 2,
+  distancia = "bray",
+  metodo  = "average",
+  graficar = TRUE
+)
+
+res2$matriz
+res2$grupos
+```
+
+
 # Introducción {-}
 
 El Sudoku ...
@@ -121,15 +164,55 @@ El análisis de agrupamiento o análisis cluster ... []
 
 Este es mi dendrograma para el Sudoku SK (I) (ver Figura \@ref(fig:dendrograma-sk-i))
 
-```{r dendrograma-sk-i, echo=F, fig.cap="Dendrograma para el Sudoku SK (I)"}
-# Mostrar árbol completo (sin cortar)
-plot(hc_upgma_d_e, 
-     main = "Dendrograma - Cluster jerárquico SK (I)",
-     xlab = "",
-     sub = "",
-     cex = 0.8)
-# Cortar y poner rectángulos
-rect.hclust(hc_upgma_d_e, 2)
+```{r dendrograma-sk-i, echo=F, fig.cap="Dendrograma para el Sudoku SK (I)", fig.pos='H'}
+res1 <- analizar_sudoku(
+  archivo = "data/sudokus_micro_sistematica.xlsx",
+  codigo = "SK  (I)",
+  k = 2,
+  distancia = "euclidean",
+  metodo = "average",
+  graficar = TRUE,
+  motor_grafico = "base"
+)
+```
+
+```{r dendrograma-sk-ii, echo=F, fig.cap="Dendrograma para el Sudoku SK  (II)", fig.pos='H'}
+res1 <- analizar_sudoku(
+  archivo = "data/sudokus_micro_sistematica.xlsx",
+  codigo = "SK  (II)",
+  k = 2,
+  distancia = "euclidean",
+  metodo = "average",
+  graficar = TRUE,
+  motor_grafico = "dendextend"
+)
+```
+
+```{r dendrograma-sk-iii, echo=F, fig.cap="Dendrograma para el Sudoku SK  (III)", fig.pos='H'}
+res1 <- analizar_sudoku(
+  archivo = "data/sudokus_micro_sistematica.xlsx",
+  codigo = "SK  (III)",
+  k = 2,
+  distancia = "euclidean",
+  metodo = "average",
+  graficar = TRUE,
+  motor_grafico = "dendextend"
+)
+```
+
+
+Este es el dendrograma para el Sudoku CD (IV), usando la distancia Bray-Curtis y cortado en tres grupos usando el paquete `dendextend` (ver Figura \@ref(fig:dendrograma-cd-iv))
+
+```{r dendrograma-cd-iv, echo=F, fig.cap="Dendrograma para el Sudoku CD (IV)", fig.pos='H'}
+res2 <- analizar_sudoku(
+  archivo = "data/sudokus_micro_sistematica.xlsx",
+  codigo = "CD (IV)",
+  k = 3,
+  distancia = "bray",
+  metodo = "average",
+  graficar = TRUE,
+  motor_grafico = "dendextend"
+)
 ```
 
 
